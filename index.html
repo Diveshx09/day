@@ -295,6 +295,15 @@
 <body>
   <div class="container" id="welcome">
     <h1>Happy Girlfriend's Day, My Love 💖</h1>
+    <div style="margin-bottom: 18px;">
+      <input
+        type="text"
+        id="nameInput"
+        placeholder="Enter your name..."
+        style="padding: 10px 18px; font-size: 1.1rem; border-radius: 20px; border: 1px solid #ccc; outline: none; margin-bottom: 10px;"
+        autocomplete="off"
+      />
+    </div>
     <button id="enterBtn">Enter</button>
   </div>
 
@@ -349,36 +358,80 @@
       }
 
       enterBtn.addEventListener("click", () => {
-        enterBtn.textContent = "❤️";
-        enterBtn.classList.add("fly-away");
+        // Get name from input field if present, else prompt
+        let nameInput = document.getElementById("nameInput");
+        let name = nameInput ? nameInput.value : prompt("Please enter your name to continue:");
+        if (name) {
+          const allowedNames = ["sweetu", "aastha", "riya"];
+          if (allowedNames.includes(name.trim().toLowerCase())) {
+            // REMOVE ALERT BOX IF PRESENT
+            let alertBox = document.getElementById("notGfAlert");
+            if (alertBox) alertBox.remove();
 
-        setTimeout(() => {
-          welcome.classList.add("hidden");
-          mainScene.classList.remove("hidden");
-          document.body.style.background = "linear-gradient(135deg, #a4508b 0%, #5f0a87 60%, #141e30 100%)";
-          document.body.style.backgroundAttachment = "fixed"; // Ensures full coverage
-          document.body.style.backgroundRepeat = "no-repeat";
-          document.body.style.backgroundSize = "cover";
-          // Remove any background from #mainScene and #tableWrap
-          document.getElementById("mainScene").style.background = "transparent";
-          document.getElementById("tableWrap").style.background = "transparent";
-          music.play();
-          launchConfetti();
-          launchBalloons();
-          launchSparkles();
-          document.addEventListener('mousemove', sprinkleHearts);
-          loveMessage.classList.remove("hidden");
-          loveMessage.classList.add("show");
-          arrangeCircle();
-          galleryImgs.forEach(img => img.classList.remove("show-img"));
-          setTimeout(() => {
-            galleryImgs.forEach((img, i) => {
+            enterBtn.textContent = "❤️";
+            enterBtn.classList.add("fly-away");
+
+            setTimeout(() => {
+              welcome.classList.add("hidden");
+              mainScene.classList.remove("hidden");
+              document.body.style.background = "linear-gradient(135deg, #a4508b 0%, #5f0a87 60%, #141e30 100%)";
+              document.body.style.backgroundAttachment = "fixed";
+              document.body.style.backgroundRepeat = "no-repeat";
+              document.body.style.backgroundSize = "cover";
+              document.getElementById("mainScene").style.background = "transparent";
+              document.getElementById("tableWrap").style.background = "transparent";
+              music.play();
+              launchConfetti();
+              launchBalloons();
+              launchSparkles();
+              document.addEventListener('mousemove', sprinkleHearts);
+              loveMessage.classList.remove("hidden");
+              loveMessage.classList.add("show");
+              arrangeCircle();
+              galleryImgs.forEach(img => img.classList.remove("show-img"));
               setTimeout(() => {
-                img.classList.add("show-img");
-              }, i * 400);
-            });
-          }, 1800);
-        }, 1600); // Wait for fly animation to complete
+                galleryImgs.forEach((img, i) => {
+                  setTimeout(() => {
+                    img.classList.add("show-img");
+                  }, i * 400);
+                });
+              }, 1800);
+            }, 1600);
+            return;
+          }
+        }
+        // Show alert message on the same page
+        let alertBox = document.getElementById("notGfAlert");
+        if (!alertBox) {
+          alertBox = document.createElement("div");
+          alertBox.id = "notGfAlert";
+          alertBox.textContent = "She's not my gf!";
+          alertBox.style.position = "fixed";
+          alertBox.style.top = "30%";
+          alertBox.style.left = "50%";
+          alertBox.style.transform = "translate(-50%, -50%)";
+          alertBox.style.padding = "30px 60px";
+          alertBox.style.background = "linear-gradient(135deg, #ff1744 60%, #b71c1c 100%)";
+          alertBox.style.color = "#fff";
+          alertBox.style.fontSize = "2rem";
+          alertBox.style.fontWeight = "bold";
+          alertBox.style.borderRadius = "20px";
+          alertBox.style.boxShadow = "0 0 30px 10px #ff1744, 0 0 60px 20px #b71c1c";
+          alertBox.style.zIndex = "10000";
+          alertBox.style.textShadow = "0 0 10px #fff";
+          alertBox.style.animation = "glowRed 1s infinite alternate";
+          document.body.appendChild(alertBox);
+
+          // Add glowing animation
+          const style = document.createElement('style');
+          style.innerHTML = `
+            @keyframes glowRed {
+              from { box-shadow: 0 0 30px 10px #ff1744, 0 0 60px 20px #b71c1c; }
+              to { box-shadow: 0 0 60px 20px #ff1744, 0 0 90px 30px #b71c1c; }
+            }
+          `;
+          document.head.appendChild(style);
+        }
       });
 
       window.addEventListener("resize", arrangeCircle);
